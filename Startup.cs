@@ -12,6 +12,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using D365CRM.Data;
 
 namespace D365CRM
 {
@@ -34,9 +36,10 @@ namespace D365CRM
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "D365CRM", Version = "v1" });
             });
 
-            // Add Azure AD authentication
-            services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
-                .AddAzureAD(options => Configuration.Bind("AzureAd", options));
+            services.AddDbContext<D365CRMContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("D365CRMContext")));
+
+            
 
         }
 
